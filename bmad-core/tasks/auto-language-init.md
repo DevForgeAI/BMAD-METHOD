@@ -36,7 +36,8 @@ auto_init_language_environment() {
   COMPONENT_PATTERNS="[A-Z][a-zA-Z]*Service|[A-Z][a-zA-Z]*Controller|[A-Z][a-zA-Z]*Repository"
   FILE_EXTENSIONS="*.*"
   
-  # Multi-tier detection strategy for new/existing projects
+  # Multi-tier detection strategy using Universal Tools
+  # Use Glob tool to detect configuration files, then Read tool to examine contents
   
   # Tier 1: Config files (most reliable)
   if [ -f "$PROJECT_DIR/package.json" ]; then

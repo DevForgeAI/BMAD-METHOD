@@ -163,7 +163,7 @@ For error analysis, use the Grep tool with the patterns defined in `$BMAD_ERROR_
 Use Claude Code CLI tools for story analysis without bash scripting:
 
 **Story Directory Discovery:**
-- Use LS tool to check for common story directories: `docs/stories`, `stories`, `.bmad/stories`
+- Use LS tool to check for common story directories: `docs/stories`, `stories`, `.bmad/stories` 
 - Use Glob tool with pattern `**/*story*.md` to find story files project-wide
 
 **Completed Stories Analysis:**
@@ -233,12 +233,12 @@ Grep tool parameters:
 **Git History Analysis (if git repository detected):**
 
 **Recent Functional Changes:**
-- Use Bash tool to execute git commands in IDE environment
+- If `$DETECTED_IDE` is `claude-code`, use Bash tool to execute git commands with native integration
 - Command: `git log --oneline -20 --grep="feat|fix|refactor|break"`
 - Document functional changes that could impact current work
 
 **Modified Files Analysis:**
-- Use Bash tool: `git diff --name-only HEAD~5..HEAD`
+- If `$DETECTED_IDE` is `claude-code`, use Bash tool: `git diff --name-only HEAD~5..HEAD`
 - Identify recently changed files for impact assessment
 
 **File Impact Assessment Using Grep Tool:**
