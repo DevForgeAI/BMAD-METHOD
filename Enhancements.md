@@ -2,6 +2,8 @@
 
 ## 🚀 Available Enhancement: Claude Code Hooks Integration
 
+📖 **[Detailed Documentation](tools/claude-code-hooks/README.md)** | ⚠️ **[Known Issues](tools/claude-code-hooks/KNOWN-ISSUES.md)**
+
 ### What It Does
 Automates BMAD quality enforcement for Claude Code CLI users through native hooks - no more manual commands for quality checks, context loading, or progress tracking.
 
@@ -29,41 +31,39 @@ npm run install:claude-hooks -- --project-dir /path/to/your/project
 
 ### Configuration Options
 
-Users can customize hook behavior through `.claude/settings.json` in their project directory:
+Users can customize hook behavior through `.claude/bmad-config.json` in their project directory:
 
 ```json
 {
-  "bmad-hooks": {
-    "enabled": true,
-    "preset": "balanced",  // strict | balanced | relaxed
-    "hooks": {
-      "userPromptSubmit": {
-        "enabled": true,
-        "autoLoadStory": true,
-        "contextDepth": "current"  // current | full | minimal
-      },
-      "preToolUse": {
-        "enabled": true,
-        "blockSimulation": true,
-        "requireTests": false,
-        "maxRetries": 3
-      },
-      "postToolUse": {
-        "enabled": true,
-        "updateProgress": true,
-        "trackFiles": true
-      },
-      "stop": {
-        "enabled": true,
-        "generateSummary": true,
-        "saveContext": true
-      }
+  "enabled": true,
+  "preset": "balanced",  // strict | balanced | relaxed
+  "hooks": {
+    "userPromptSubmit": {
+      "enabled": true,
+      "autoLoadStory": true,
+      "contextDepth": "current"  // current | full | minimal
     },
-    "performance": {
-      "cacheTimeout": 300000,  // 5 minutes
-      "maxTokens": 4000,
-      "alertThreshold": 500  // ms
+    "preToolUse": {
+      "enabled": true,
+      "blockSimulation": true,
+      "requireTests": false,
+      "maxRetries": 3
+    },
+    "postToolUse": {
+      "enabled": true,
+      "updateProgress": true,
+      "trackFiles": true
+    },
+    "stop": {
+      "enabled": true,
+      "generateSummary": true,
+      "saveContext": true
     }
+  },
+  "performance": {
+    "cacheTimeout": 300000,  // 5 minutes
+    "maxTokens": 4000,
+    "alertThreshold": 500  // ms
   }
 }
 ```
