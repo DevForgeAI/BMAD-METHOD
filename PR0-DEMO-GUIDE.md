@@ -114,13 +114,6 @@ BMAD-Method emphasizes "reality-first development". PR0 makes this philosophy **
 - **GitHub Copilot**: Suggests code, doesn't validate
 - **BMAD + PR0**: Only solution that prevents technical debt
 
-### User Testimonials
-> "I tried to write a TODO and it wouldn't let me. At first I was annoyed, then I realized I hadn't written a TODO in 3 months. My codebase has never been cleaner." - Senior Developer
-
-> "We deployed PR0 across our team. Our bug rate dropped 87% in the first month. This should be standard in every IDE." - Engineering Manager
-
-> "As someone who inherited a codebase with 400+ TODOs, I wish this existed 5 years ago." - Lead Developer
-
 ## 🚀 Repository Benefits
 
 ### For BMAD-Method Maintainers
