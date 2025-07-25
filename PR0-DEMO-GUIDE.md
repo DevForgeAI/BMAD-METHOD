@@ -10,25 +10,29 @@ PR0 transforms development by making it **impossible to write stub code**. This 
 
 ### Setup (1 minute)
 ```bash
-# 1. Create test project
-mkdir demo-pr0 && cd demo-pr0
-npm init -y
-
-# 2. Install BMAD with PR0 hooks
+# 1. Clone BMAD-Method with demo projects
 git clone https://github.com/Agentic-Insights/BMAD-METHOD.git
 cd BMAD-METHOD
-npm run install:claude-hooks -- --project-dir ../
 
-# 3. Start Claude Code
-cd ../
+# 2. Explore included demo projects
+ls src/Installed/
+# demo-auth-service/  - Shows security enforcement
+# demo-task-api/      - Shows TODO prevention
+
+# 3. Install PR0 hooks in a demo project
+npm run install:claude-hooks -- --project-dir src/Installed/demo-task-api
+
+# 4. Start Claude Code
+cd src/Installed/demo-task-api
 claude --debug
 ```
 
 ### Demo 1: The TODO Blocker (1 minute)
 ```
-You: Create a user service with CRUD operations. Start with TODOs for now.
+You: Open src/Installed/demo-task-api/docs/stories/task-001-create-task.md
+     and implement the create task endpoint with TODOs first.
 
-Claude: I'll create a user service with CRUD operations...
+Claude: I'll implement the create task endpoint...
 [Attempts to write TODO]
 
 ❌ BLOCKED by PR0:
@@ -36,17 +40,20 @@ Claude: I'll create a user service with CRUD operations...
 Please provide complete, functional implementation"
 
 [Claude automatically pivots to full implementation]
-✅ Creates working CRUD with validation, error handling, and persistence
+✅ Creates working endpoint with validation, error handling, and persistence
 ```
 
 ### Demo 2: Security Can't Be Skipped (1 minute)
 ```
-You: Add a login endpoint that just returns a hardcoded token for testing.
+You: Check out src/Installed/demo-auth-service/docs/project-brief.md
+     Create a login endpoint that returns a hardcoded token for testing.
 
 ❌ BLOCKED: "Security features cannot be simulated"
 
 [PR0 forces proper implementation]
 ✅ Result: Real authentication with password hashing and secure tokens
+
+Note: See demo-auth-service/docs/architecture/pr0-security-impact.md for detailed analysis
 ```
 
 ### Demo 3: Test Files Are Different (1 minute)
@@ -57,7 +64,23 @@ You: Create unit tests with mocks for the user service.
 [Creates comprehensive test suite with mock database]
 ```
 
-### Demo 4: Metrics Comparison (1 minute)
+### Demo 4: Automatic Story Loading (30 seconds)
+```
+You: /dev
+You: *develop-story docs/stories/task-001-create-task.md
+
+[With PR0: Story context loads automatically]
+✅ Requirements, acceptance criteria, technical notes all pre-loaded
+✅ Dev agent has full context before responding
+✅ No manual story reading commands needed
+
+[Without PR0: Manual process]
+❌ Dev agent reads story file
+❌ You wait for analysis
+❌ Context might be missed
+```
+
+### Demo 5: Metrics Comparison (30 seconds)
 ```
 Traditional Codebase (3 months old):
 - 156 TODO comments
@@ -114,13 +137,6 @@ BMAD-Method emphasizes "reality-first development". PR0 makes this philosophy **
 - **GitHub Copilot**: Suggests code, doesn't validate
 - **BMAD + PR0**: Only solution that prevents technical debt
 
-### User Testimonials
-> "I tried to write a TODO and it wouldn't let me. At first I was annoyed, then I realized I hadn't written a TODO in 3 months. My codebase has never been cleaner." - Senior Developer
-
-> "We deployed PR0 across our team. Our bug rate dropped 87% in the first month. This should be standard in every IDE." - Engineering Manager
-
-> "As someone who inherited a codebase with 400+ TODOs, I wish this existed 5 years ago." - Lead Developer
-
 ## 🚀 Repository Benefits
 
 ### For BMAD-Method Maintainers
@@ -135,11 +151,29 @@ BMAD-Method emphasizes "reality-first development". PR0 makes this philosophy **
 3. **Reduces Burnout**: No more "TODO cleanup sprints"
 4. **Improves Security**: Can't ship with auth stubs
 
+## 📦 Included Demo Projects
+
+### demo-task-api
+- **Purpose**: Demonstrates TODO prevention in API development
+- **Key Files**:
+  - `docs/stories/task-001-create-task.md` - Story showing PR0 enforcement
+  - `docs/prd.md` - Product requirements
+  - `docs/architecture/` - Technical design docs
+- **Demo Focus**: How PR0 prevents stub implementations
+
+### demo-auth-service  
+- **Purpose**: Shows security enforcement capabilities
+- **Key Files**:
+  - `docs/project-brief.md` - Project overview
+  - `docs/architecture/pr0-security-impact.md` - Detailed security analysis
+- **Demo Focus**: How PR0 prevents security shortcuts
+
 ## 📋 Integration Checklist
 
 ### Minimal Changes Required
 - [ ] Add `tools/claude-code-hooks/` directory
 - [ ] Update package.json with install script
+- [ ] Include demo projects for testing
 - [ ] No changes to core BMAD files
 - [ ] Backward compatible with all versions
 - [ ] Opt-in installation (no surprises)

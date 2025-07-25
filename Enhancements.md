@@ -136,6 +136,42 @@ The hooks integrate seamlessly with BMAD's quality framework:
 
 5. **Handoff Preparation**: When switching between Dev/QA/PM agents, the Stop hook creates a handoff summary with context for the next agent
 
+### Demo 5: Automatic Story Context Loading
+
+**Scenario**: Developer starts work on a story using BMAD's `/dev` agent
+
+**Prerequisites**:
+- Story file must have `Status: Ready for Development`
+- Dev agent must be assigned in story metadata
+
+```markdown
+# Without PR0:
+You: /dev
+You: *develop-story docs/stories/TASK-001-Create-Task.md
+[Dev agent manually loads and reads the story file]
+[You have to wait and provide context]
+
+# With PR0:
+You: /dev
+You: *develop-story docs/stories/TASK-001-Create-Task.md
+[PR0's UserPromptSubmit hook automatically detects the story command]
+[Story context is pre-loaded before the agent even responds]
+[Dev agent immediately has full context: requirements, acceptance criteria, technical notes]
+[No manual context loading needed!]
+
+# Even Better - Direct Story Development:
+You: Implement the create task endpoint from TASK-001
+[PR0 detects you're talking about a story]
+[Automatically loads TASK-001 context]
+[Dev agent has everything needed without any commands]
+```
+
+**Key Benefits**:
+- Zero manual story loading
+- Instant context awareness
+- No forgotten requirements
+- Seamless workflow
+
 ---
 
 ## 🔮 Coming Soon: Quality Framework Enhancements
