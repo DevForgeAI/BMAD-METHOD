@@ -6,9 +6,11 @@ Automatic quality enforcement and context management for BMAD-Method users runni
 
 These hooks integrate with Claude Code's native hooks system to provide:
 - **Automatic context loading** from active story files
-- **Pre-write validation** to prevent simulation patterns
+- **Pre-write validation** to prevent simulation patterns (see Known Issues)
 - **Progress tracking** without manual story updates
 - **Session summaries** with actionable next steps
+
+**⚠️ Important**: There is currently a bug in Claude Code where PreToolUse hooks cannot actually block operations. See [KNOWN-ISSUES.md](KNOWN-ISSUES.md) for details.
 
 ## Installation
 

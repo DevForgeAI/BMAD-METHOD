@@ -11,6 +11,7 @@ const path = require('path');
 const Config = require('./lib/config');
 const ignoreManager = require('./lib/ignore');
 const PerformanceMonitor = require('./lib/performance');
+const { readStdinJson } = require('./lib/stdin-reader');
 
 async function validateBeforeWrite() {
   return PerformanceMonitor.measure('PreToolUse', async () => {
@@ -29,8 +30,10 @@ async function validateBeforeWrite() {
         console.log(JSON.stringify({ approve: true }));
         return;
       }
-    const toolName = process.env.CLAUDE_CODE_TOOL_NAME || '';
-    const toolInput = JSON.parse(process.env.CLAUDE_CODE_TOOL_INPUT || '{}');
+    // Read input from stdin
+    const input = await readStdinJson();
+    const toolName = input.tool_name || '';
+    const toolInput = input.tool_input || {};
     
     if (!['Write', 'Edit', 'MultiEdit'].includes(toolName)) {
       console.log(JSON.stringify({ approve: true }));
