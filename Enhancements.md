@@ -140,37 +140,61 @@ The hooks integrate seamlessly with BMAD's quality framework:
 
 ## 🔮 Coming Soon: Quality Framework Enhancements
 
+Each enhancement builds upon PR0's foundation, creating an increasingly powerful quality engineering platform. Here's how they interconnect:
+
 ### PR1: Reality Enforcement & Audit System
 **What:** 10-phase comprehensive quality validation with A-F scoring  
-**Benefit:** Objective code quality measurement, zero simulation patterns in production
+**Benefit:** Objective code quality measurement, zero simulation patterns in production  
+**Builds on PR0:** Uses PR0's PreToolUse hook to trigger reality audits before writes
 
 ### PR2: Automatic Remediation Execution
 **What:** Zero-touch fix story generation when issues detected  
-**Benefit:** No manual commands to fix issues - solutions delivered ready-to-implement
+**Benefit:** No manual commands to fix issues - solutions delivered ready-to-implement  
+**Builds on PR0:** Leverages PR0's quality detection to automatically generate fix stories
 
 ### PR3: Loop Detection & Escalation
 **What:** Automatic detection of debugging loops with external LLM collaboration  
-**Benefit:** Never waste 60+ minutes stuck - get help from Gemini/GPT-4 automatically
+**Benefit:** Never waste 60+ minutes stuck - get help from Gemini/GPT-4 automatically  
+**Builds on PR0:** Monitors PR0's retry patterns to detect when you're stuck
 
 ### PR4: Dual-Track Progress Updates
 **What:** Synchronized story file and TodoWrite updates  
-**Benefit:** Never lose track of progress - dual accountability system
+**Benefit:** Never lose track of progress - dual accountability system  
+**Builds on PR0:** Extends PR0's PostToolUse hook to sync TodoWrite with story checkboxes
+
+**PR4 Example:** 
+```
+Without PR0+PR4:
+- Developer updates TodoWrite: ✓ Create authentication endpoint
+- Story file shows: ☐ Create authentication endpoint (out of sync!)
+- Progress confusion and manual updates needed
+
+With PR0+PR4:
+- Developer updates TodoWrite: ✓ Create authentication endpoint
+- PR0's PostToolUse hook triggers → PR4 syncs automatically
+- Story file updates: ✓ Create authentication endpoint
+- Both systems show accurate progress in real-time
+```
 
 ### PR5: Role-Optimized LLM Settings
 **What:** Each agent tuned with optimal temperature/creativity settings  
-**Benefit:** Better code from Dev, better analysis from QA, better ideas from Analyst
+**Benefit:** Better code from Dev, better analysis from QA, better ideas from Analyst  
+**Builds on PR0:** PR0's UserPromptSubmit hook detects agent role and applies settings
 
 ### PR6: IDE Environment Detection
 **What:** Auto-adapt to Cursor, Windsurf, Cline, and 8+ IDEs  
-**Benefit:** Native tool usage per IDE - fewer approval prompts
+**Benefit:** Native tool usage per IDE - fewer approval prompts  
+**Builds on PR0:** Enhances PR0's hook system to use IDE-specific commands
 
 ### PR7: Collaborative Workspace System
 **What:** Multi-agent coordination across Claude Code sessions  
-**Benefit:** True AI team collaboration - Dev, QA, and PM working in parallel
+**Benefit:** True AI team collaboration - Dev, QA, and PM working in parallel  
+**Builds on PR0:** Uses PR0's Stop hook to prepare handoffs between agents
 
 ### PR8: Full Claude Code CLI Integration
 **What:** Session management, maintenance tools, analytics  
-**Benefit:** Enterprise-grade Claude Code workspace experience
+**Benefit:** Enterprise-grade Claude Code workspace experience  
+**Builds on PR0:** Provides CLI commands to manage PR0-7's features
 
 ---
 
