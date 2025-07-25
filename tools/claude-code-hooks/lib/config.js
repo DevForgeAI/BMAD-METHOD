@@ -64,12 +64,20 @@ class Config {
       const localConfig = await this.loadFile('.bmad-hooks.json');
       if (localConfig) return localConfig;
       
-      // Check Claude Code settings
-      const settingsPath = path.join(homedir(), '.claude', 'settings.json');
-      const settings = await this.loadFile(settingsPath);
+      // Check project-level Claude Code settings first
+      const projectSettingsPath = path.join(process.cwd(), '.claude', 'settings.json');
+      const projectSettings = await this.loadFile(projectSettingsPath);
       
-      if (settings && settings.bmad) {
-        return this.mergeWithDefaults(settings.bmad);
+      if (projectSettings && projectSettings['bmad-hooks']) {
+        return this.mergeWithDefaults(projectSettings['bmad-hooks']);
+      }
+      
+      // Fall back to global Claude Code settings
+      const globalSettingsPath = path.join(homedir(), '.claude', 'settings.json');
+      const globalSettings = await this.loadFile(globalSettingsPath);
+      
+      if (globalSettings && globalSettings['bmad-hooks']) {
+        return this.mergeWithDefaults(globalSettings['bmad-hooks']);
       }
       
       return this.defaults;
@@ -89,8 +97,9 @@ class Config {
   
   mergeWithDefaults(config) {
     // Apply preset if specified
-    if (config.modes && config.modes.current && this.presets[config.modes.current]) {
-      config = this.deepMerge(config, this.presets[config.modes.current]);
+    const presetName = config.preset || (config.modes && config.modes.current);
+    if (presetName && this.presets[presetName]) {
+      config = this.deepMerge(config, this.presets[presetName]);
     }
     
     return this.deepMerge(this.defaults, config);
