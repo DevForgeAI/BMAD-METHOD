@@ -64,7 +64,14 @@ class Config {
       const localConfig = await this.loadFile('.bmad-hooks.json');
       if (localConfig) return localConfig;
       
-      // Check project-level Claude Code settings first
+      // Check for bmad-config.json in .claude directory (avoids validation errors)
+      const bmadConfigPath = path.join(process.cwd(), '.claude', 'bmad-config.json');
+      const bmadConfig = await this.loadFile(bmadConfigPath);
+      if (bmadConfig) {
+        return this.mergeWithDefaults(bmadConfig);
+      }
+      
+      // Check project-level Claude Code settings (legacy support)
       const projectSettingsPath = path.join(process.cwd(), '.claude', 'settings.json');
       const projectSettings = await this.loadFile(projectSettingsPath);
       

@@ -134,41 +134,43 @@ async function install() {
       settings.hooks = {};
     }
     
-    // Add BMAD configuration
-    if (!settings['bmad-hooks']) {
-      settings['bmad-hooks'] = {
-        enabled: true,
-        preset: "balanced",
-        hooks: {
-          userPromptSubmit: {
-            enabled: true,
-            autoLoadStory: true,
-            contextDepth: "current"
-          },
-          preToolUse: {
-            enabled: true,
-            blockSimulation: true,
-            requireTests: false,
-            maxRetries: 3
-          },
-          postToolUse: {
-            enabled: true,
-            updateProgress: true,
-            trackFiles: true
-          },
-          stop: {
-            enabled: true,
-            generateSummary: true,
-            saveContext: true
-          }
+    // Create separate BMAD configuration file to avoid validation errors
+    const bmadConfig = {
+      enabled: true,
+      preset: "balanced",
+      hooks: {
+        userPromptSubmit: {
+          enabled: true,
+          autoLoadStory: true,
+          contextDepth: "current"
         },
-        performance: {
-          cacheTimeout: 300000,
-          maxTokens: 4000,
-          alertThreshold: 500
+        preToolUse: {
+          enabled: true,
+          blockSimulation: true,
+          requireTests: false,
+          maxRetries: 3
+        },
+        postToolUse: {
+          enabled: true,
+          updateProgress: true,
+          trackFiles: true
+        },
+        stop: {
+          enabled: true,
+          generateSummary: true,
+          saveContext: true
         }
-      };
-    }
+      },
+      performance: {
+        cacheTimeout: 300000,
+        maxTokens: 4000,
+        alertThreshold: 500
+      }
+    };
+    
+    // Write BMAD config to separate file
+    const bmadConfigPath = path.join(projectDir, '.claude', 'bmad-config.json');
+    await fs.writeFile(bmadConfigPath, JSON.stringify(bmadConfig, null, 2));
     
     // Merge hooks (preserving existing non-BMAD hooks)
     for (const [hookType, hookList] of Object.entries(hookConfig.hooks)) {
@@ -202,8 +204,11 @@ async function install() {
     console.log('3. Use /reality-audit to validate implementations\n');
     
     console.log('⚙️  To disable hooks temporarily:');
-    console.log('Edit .claude/settings.json and set bmad-hooks.enabled to false');
+    console.log('Edit .claude/bmad-config.json and set enabled to false');
     console.log('Or use runtime command: *hooks-disable\n');
+    
+    console.log('📄 Configuration stored in: .claude/bmad-config.json');
+    console.log('(Separate file avoids Claude Code validation errors)\n');
     
   } catch (error) {
     console.error('❌ Installation failed:', error.message);

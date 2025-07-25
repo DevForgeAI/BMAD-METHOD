@@ -29,7 +29,7 @@ npm run install:claude-hooks -- --project-dir /path/to/your/project
 
 ### Configuration Options
 
-Users can customize hook behavior through `.claude/settings.json` in their project directory:
+Users can customize hook behavior through `.claude/bmad-config.json` in their project directory:
 
 ```json
 {

@@ -30,13 +30,22 @@ Currently, PreToolUse hooks serve only as logging/warning mechanisms. Full funct
 
 **Issue**: Claude Code rejects custom keys in settings.json
 
-**Status**: Design limitation
+**Status**: Resolved with workaround
 
 **Description**:
-Claude Code's settings validation rejects unknown keys like `bmad-hooks`, requiring hook configuration to be stored elsewhere or use only standard keys.
+Claude Code's settings validation rejects unknown keys like `bmad-hooks`, causing validation errors:
+```
+[DEBUG] Invalid settings in projectSettings source - key: bmad-hooks, error: [
+  {
+    "code": "unrecognized_keys",
+    "keys": ["bmad-hooks"],
+    "message": "Unrecognized key(s) in object: 'bmad-hooks'"
+  }
+]
+```
 
-**Workaround**:
-The installer now only adds standard hook configurations to settings.json. Custom BMAD settings could be stored in a separate `.bmad-hooks.json` file if needed.
+**Solution**:
+The installer now creates a separate `.claude/bmad-config.json` file for BMAD-specific configuration. This avoids validation errors while keeping hook configurations easily accessible and modifiable.
 
 ## Installation Notes
 
