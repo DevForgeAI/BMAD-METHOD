@@ -1,30 +1,30 @@
 # Known Issues
 
-## Claude Code PreToolUse Hook Bug
+## ~~Claude Code PreToolUse Hook Bug~~ (RESOLVED)
 
-**Issue**: PreToolUse hooks cannot actually block tool execution in Claude Code CLI.
+**Issue**: PreToolUse hooks were using incorrect syntax for decision control.
 
-**Status**: Reported to Anthropic - [GitHub Issue #4362](https://github.com/anthropics/claude-code/issues/4362)
+**Status**: ✅ Resolved - [GitHub Issue #4362](https://github.com/anthropics/claude-code/issues/4362)
 
-**Description**: 
-When a PreToolUse hook returns `{"approve": false}`, Claude Code ignores the rejection and proceeds with the tool operation anyway. This makes it impossible to prevent writes based on validation criteria.
-
-**Impact**:
-- Quality enforcement cannot prevent bad code from being written
-- Hooks can only log/warn but not block operations
-- The primary purpose of PreToolUse validation is defeated
-
-**Debug Evidence**:
-```
-[DEBUG] Hook stdout: {"approve":false,"message":"BMAD Reality Guard: Detected simulation pattern..."}
-[DEBUG] Successfully parsed and validated hook JSON output
-[DEBUG] Parsed JSON output from hook: {}  // Should contain the rejection!
-[DEBUG] Processed hook result: {}         // Empty instead of rejection
-[DEBUG] Writing to temp file...           // Proceeds anyway!
+**Resolution**: 
+The correct syntax for PreToolUse decision control is:
+```json
+{
+  "hookSpecificOutput": {
+    "hookEventName": "PreToolUse",
+    "permissionDecision": "allow" | "deny",
+    "permissionDecisionReason": "Optional reason shown to user"
+  }
+}
 ```
 
-**Workaround**: 
-Currently, PreToolUse hooks serve only as logging/warning mechanisms. Full functionality awaits a fix from the Claude Code team.
+**Previous Issue**: 
+The hooks were using `{"approve": false}` which was incorrect. The official documentation at https://docs.anthropic.com/en/docs/claude-code/hooks#pretooluse-decision-control shows the correct format.
+
+**Current Status**: 
+✅ PreToolUse hooks now correctly block operations when validation fails
+✅ Quality enforcement can prevent bad code from being written
+✅ Full validation functionality is now working as intended
 
 ## Custom Configuration Keys
 

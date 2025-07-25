@@ -18,7 +18,12 @@ async function validateBeforeWrite() {
     try {
       // Check if hooks are disabled
       if (Config.isDisabled()) {
-        console.log(JSON.stringify({ approve: true }));
+        console.log(JSON.stringify({ 
+          hookSpecificOutput: {
+            hookEventName: "PreToolUse",
+            permissionDecision: "allow"
+          }
+        }));
         return;
       }
       
@@ -27,7 +32,12 @@ async function validateBeforeWrite() {
       const settings = await config.load();
       
       if (!settings.enabled || !settings.hooks.writeValidator) {
-        console.log(JSON.stringify({ approve: true }));
+        console.log(JSON.stringify({ 
+          hookSpecificOutput: {
+            hookEventName: "PreToolUse",
+            permissionDecision: "allow"
+          }
+        }));
         return;
       }
     // Read input from stdin
@@ -86,10 +96,13 @@ async function validateBeforeWrite() {
     for (const pattern of simulationPatterns) {
       if (pattern.test(contentToCheck)) {
         console.log(JSON.stringify({
-          approve: false,
-          message: 'BMAD Reality Guard: Detected simulation pattern. ' +
-                   'Please provide complete, functional implementation. ' +
-                   'No stubs, mocks, or placeholders allowed in production code.'
+          hookSpecificOutput: {
+            hookEventName: "PreToolUse",
+            permissionDecision: "deny",
+            permissionDecisionReason: 'BMAD Reality Guard: Detected simulation pattern. ' +
+                                    'Please provide complete, functional implementation. ' +
+                                    'No stubs, mocks, or placeholders allowed in production code.'
+          }
         }));
         return;
       }
@@ -111,9 +124,12 @@ async function validateBeforeWrite() {
     for (const pattern of emptyImplementations) {
       if (pattern.test(contentToCheck)) {
         console.log(JSON.stringify({
-          approve: false,
-          message: 'BMAD Reality Guard: Empty method body detected. ' +
-                   'All methods must contain functional implementation.'
+          hookSpecificOutput: {
+            hookEventName: "PreToolUse",
+            permissionDecision: "deny",
+            permissionDecisionReason: 'BMAD Reality Guard: Empty method body detected. ' +
+                                    'All methods must contain functional implementation.'
+          }
         }));
         return;
       }
