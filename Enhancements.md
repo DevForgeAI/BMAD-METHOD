@@ -2,7 +2,7 @@
 
 ## 🚀 Available Enhancement: Claude Code Hooks Integration
 
-📖 **[Detailed Documentation](tools/claude-code-hooks/README.md)** | 🔮 **[Future Possibilities](HookPossibilities.md)** | 📊 **[Platform Vision](PR0-Hook-Platform-Vision.md)**
+📖 **[Detailed Documentation](tools/claude-code-hooks/README.md)** | 🔮 **[Future Possibilities](HookPossibilities.md)**
 
 ### What It Does
 Automates BMAD quality enforcement for Claude Code CLI users through native hooks - no more manual commands for quality checks, context loading, or progress tracking.
