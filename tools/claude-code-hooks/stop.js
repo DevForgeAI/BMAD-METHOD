@@ -9,9 +9,12 @@
 const fs = require('fs').promises;
 const path = require('path');
 const { readdir, stat, readFile } = require('fs').promises;
+const { readStdinJson } = require('./lib/stdin-reader');
 
 async function generateSessionSummary() {
   try {
+    // Read input from stdin (if any)
+    const input = await readStdinJson();
     const messages = [];
     const workspacePath = '.workspace';
     

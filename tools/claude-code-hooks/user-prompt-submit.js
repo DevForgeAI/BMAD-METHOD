@@ -13,6 +13,7 @@ const { readdir, stat } = require('fs').promises;
 const Cache = require('./lib/cache');
 const { filterContext, filterAcceptanceCriteria } = require('./lib/context-filter');
 const PerformanceMonitor = require('./lib/performance');
+const { readStdinJson } = require('./lib/stdin-reader');
 
 // Cache for story files (5 minute TTL)
 const storyCache = new Cache(300000);
@@ -20,7 +21,9 @@ const storyCache = new Cache(300000);
 async function loadActiveContext() {
   return PerformanceMonitor.measure('UserPromptSubmit', async () => {
     try {
-    const prompt = process.env.CLAUDE_CODE_PROMPT || '';
+    // Read input from stdin
+    const input = await readStdinJson();
+    const prompt = input.prompt || '';
     
     // Check cache first
     const cacheKey = 'active-story';

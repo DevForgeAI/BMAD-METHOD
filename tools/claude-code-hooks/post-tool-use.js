@@ -9,12 +9,15 @@
 const fs = require('fs').promises;
 const path = require('path');
 const { readdir, stat, mkdir, writeFile, appendFile, readFile } = require('fs').promises;
+const { readStdinJson } = require('./lib/stdin-reader');
 
 async function updateProgressAndQuality() {
   try {
-    const toolName = process.env.CLAUDE_CODE_TOOL_NAME || '';
-    const toolInput = JSON.parse(process.env.CLAUDE_CODE_TOOL_INPUT || '{}');
-    const toolOutput = JSON.parse(process.env.CLAUDE_CODE_TOOL_OUTPUT || '{}');
+    // Read input from stdin
+    const input = await readStdinJson();
+    const toolName = input.tool_name || '';
+    const toolInput = input.tool_input || {};
+    const toolOutput = input.tool_output || {};
     
     const relevantTools = ['Write', 'Edit', 'MultiEdit', 'Bash'];
     if (!relevantTools.includes(toolName)) {
